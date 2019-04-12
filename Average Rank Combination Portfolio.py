@@ -1,4 +1,4 @@
-#this script takes the financial data extracted from a bloomberg terminal and 
+#this script takes the financial data extracted from a bloomberg terminal.  The financial feature combinations are based on recommended combinations from "Average rank combination.py"
 
 import pandas as pd
 import numpy as np
@@ -30,6 +30,7 @@ i = stockdata.loc[stockdata[0] == 'RETURN_COM_EQY']
 attributes = [a, b, c, d, e, f, g, h, i]
 avg_att = []
 
+#Formats dataframe correctly
 for n in attributes:
     j = n.drop(n.columns[0], axis=1)
     #k = j.dropna(axis=0, how='any')
@@ -46,6 +47,7 @@ for k in avg_att:
 names = x[0].as_matrix().T
 data_matrix = np.column_stack(data_arrays)
 
+#cleans data, removes nan values, and processes it
 clean_data_matrix = data_matrix[~np.any(np.isnan(data_matrix), axis=1)]
 clean_data_matrix = clean_data_matrix * np.array([1, 1, 1, -1, -1, 1, 1, -1, 1])
 clean_names = names[~np.any(np.isnan(data_matrix), axis=1)]
@@ -55,6 +57,7 @@ for i in range(0, 9):
     j = clean_data_matrix[:, i]
     data_vectors.append(j)
 
+#normalizes scores
 scores = []
 for i in data_vectors:
     a = (1/(max(i)-min(i)))*(i-(min(i) * (np.ones(np.shape(i)))))
@@ -65,14 +68,17 @@ for i in data_vectors:
     a = (1/(max(i)-min(i)))*(i-(min(i) * (np.ones(np.shape(i)))))
     scores.append(a)
 
+#creates ranks for stocks based on score
 ranks = []
 for i in scores[0:8]:
     j = ss.rankdata(i, method="min")
     j = (j.shape[0])*(np.ones(np.shape(j))) - j + 1
     ranks.append(j)
 
+#Recommended by Average Combinations
 top_5_scores = [scores[0], scores[2], scores[3], scores[5], scores[6]]
 #Features: ACDFG
+#Recommended by Average Rank combinations
 top_5_ranks = [ranks[0], ranks[2], ranks[3], ranks[5], ranks[6]]
 
 score_comb = []
