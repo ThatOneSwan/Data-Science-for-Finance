@@ -27,6 +27,7 @@ i = stockdata.loc[stockdata[0] == 'RETURN_COM_EQY']
 attributes = [a, b, c, d, e, f, g, h, i]
 avg_att = []
 
+#cleans data
 for n in attributes:
     j = n.drop(n.columns[0], axis=1)
     l = j.apply(pd.to_numeric, errors='coerce')
@@ -160,7 +161,7 @@ plt.tick_params('x', direction='out', length=15, top='off', pad=7)
 
 
 print np.shape(score_mat[0])
-#plt.show()
+plt.show()
 
 
 
