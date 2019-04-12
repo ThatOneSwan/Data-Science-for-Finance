@@ -1,8 +1,10 @@
+#this script takes the financial data extracted from a bloomberg terminal and 
+
 import pandas as pd
 import numpy as np
 import itertools
 import scipy.stats as ss
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 #load data into data frame, may have to change file path.  Also make sure the excel file is saved as a CSV file
 stockdata = pd.read_csv("C:\Users\Jason\Desktop\Computational finance\CompFinResearch\Data\Hsu Stock Data(CSV).csv",
                         header=None)
@@ -14,6 +16,7 @@ x = stockdata.loc[~stockdata[0].isin(t)]
 x = x.dropna(how='all')
 y = stockdata.loc[stockdata[0] == 'Date']
 y = y.iloc[0, :].tolist()[1:len(y)-1]
+#assigns each data frame for each feature to a specific variable
 a = stockdata.loc[stockdata[0] == 'IS_EPS']
 b = stockdata.loc[stockdata[0] == 'EBITDA']
 c = stockdata.loc[stockdata[0] == 'PROF_MARGIN']
@@ -135,7 +138,7 @@ for i in comb_labels:
     a = ''.join(i)
     labels.append(a)
 
-
+#Use combinations of features C and F, features C,D,F, and combinations of features A,C,D,F
 CF = np.c_[clean_names, rank_mat[10]]
 CDF = np.c_[clean_names, rank_mat[21]]
 ACDF = np.c_[clean_names, rank_mat[25]]
@@ -184,8 +187,10 @@ for i in normal_scores:
     j = i * (1/sum(normal_scores))
     final_weights.append(j)
 
-investment = zip(stocknames, final_weights)
-print stocknames
-print list(reversed(final_weights))
+#list stocks next to a score, higher score means higher quality
+
+print investment = zip(stocknames, final_weights)
+#print stocknames
+#print list(reversed(final_weights))
 
 
